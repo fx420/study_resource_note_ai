@@ -16,12 +16,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => ['required', 'string'],
+            'username' => ['required','string'],
             'password' => ['required'],
         ]);
     
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+    
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
+    
             return redirect()->intended('/');
         }
     

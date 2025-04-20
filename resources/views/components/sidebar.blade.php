@@ -10,8 +10,7 @@
         </form>
 
         <!-- Library Button -->
-        <a class="btn btn-outline-light w-100 mb-3 d-flex align-items-center justify-content-center"
-           href="{{ route('library') }}">
+        <a class="btn btn-outline-light w-100 mb-3 d-flex align-items-center justify-content-center" href="{{ route('library') }}">
             <i class="fas fa-book me-2"></i> Library
         </a>
 

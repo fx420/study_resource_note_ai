@@ -1,9 +1,18 @@
 <?php
 
+use App\Models\Note;
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PromptTemplateController;
+use App\Http\Controllers\LogController;
+use App\Http\Controllers\ContentModerationController;
+use App\Http\Controllers\LearnedDataController;
 
 Route::get('/', function () {
     return view('index');
@@ -28,21 +37,20 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 /* ---------------------- LIBRARY CONTROLLER ---------------------- */
-Route::get('/library', function () {
-    $notes = [
-        [
-            'id'      => 1,
-            'title'   => 'Linear Algebra Summary',
-            'content' => "Eigenvalues and eigenvectors are…\nApplications include…",
-            'date'    => '2025-04-16',
-        ],
-        [
-            'id'      => 2,
-            'title'   => 'Calculus Cheat Sheet',
-            'content' => "Derivatives: f'(x) = lim…\nIntegrals: ∫ f(x) dx = …",
-            'date'    => '2025-04-15',
-        ],
-    ];
+Route::middleware('auth')->get('/library', function () {
+    $notes = Note::where('user_id', Auth::id())
+                 ->orderBy('created_at', 'desc')
+                 ->get();
 
     return view('library', compact('notes'));
 })->name('library');
+
+/* ---------------------- ADMIN CONTROLLER ---------------------- */
+Route::middleware(['auth','can:admin'])->prefix('admin')->name('admin.')->group(function(){
+    Route::get('/', [AdminController::class,'dashboard'])->name('dashboard');
+
+    Route::resource('prompt-templates', PromptTemplateController::class);
+    Route::resource('logs',            LogController::class)->only(['index','show','destroy']);
+    Route::resource('moderation',     ContentModerationController::class)->only(['index','update']);
+    Route::resource('learned-data',   LearnedDataController::class);
+});

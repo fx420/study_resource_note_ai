@@ -1,13 +1,13 @@
 @extends('layouts.index')
 
-@section('title', 'Home - Study Note AI')
+@section('title', 'Home - Study Resource Note AI')
 
 @section('content')
     <!-- Chat Messages Container -->
     <div class="chat-box">
         <div id="chatMessages" class="chat-messages">
             <div id="welcomeMessage" class="text-white text-center mb-5">
-                <h1>Welcome to Study Note AI</h1>
+                <h1>Welcome to Study Resource Note AI</h1>
                 <p>Generate study notes effortlessly using AI-powered summarization.</p>
             </div>
 

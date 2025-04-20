@@ -17,7 +17,7 @@
                     <p class="card-text text-light">
                         {{ Str::limit($note['content'], 150) }}
                     </p>
-                    <small class="text-muted">Generated on {{ $note['date'] }}</small>
+                    <small class="text-muted">Generated on {{ \Carbon\Carbon::parse($note->created_at)->format('Y-m-d') }}</small>
                 </div>
 
                 <div class="card-footer bg-transparent border-0 text-end">

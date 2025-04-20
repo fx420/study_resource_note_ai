@@ -120,6 +120,23 @@ body {
     font-size: 1rem;
 }
 
+/* Chat Bubble */
+.chat-bubble.user .bubble-actions {
+    position: absolute;
+    top: -21px;
+    right: -8px;
+    display: flex !important;
+    gap: 4px;
+}
+  
+.chat-bubble.system .bubble-actions {
+    display: none;
+}
+
+.chat-bubble.system:hover .bubble-actions {
+    display: flex;
+}
+
 /* Chat Messages */
 .chat-container {
     max-width: 1000px;
@@ -151,6 +168,7 @@ body {
     color: #ffffff;
     word-wrap: break-word;
     align-self: flex-start;
+    position: relative;
 }
 
 .chat-bubble.user {
