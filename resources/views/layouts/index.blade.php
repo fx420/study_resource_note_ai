@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/chat-box.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/library.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
     @yield('styles')
@@ -32,9 +34,11 @@
     <title>@yield('title', 'Study Resource Note AI')</title>
 </head>
 <body>
-
+    
     <!-- Sidebar Component -->
-    <x-sidebar />
+    @if (auth()->check() && ! auth()->user()->is_admin)
+        <x-sidebar />
+    @endif
 
     <!-- Header -->
     <x-header />
@@ -43,6 +47,10 @@
     <main class="container mt-4">
         @yield('content')
     </main>
+
+    @if (!View::hasSection('hideChatBox'))
+        <x-chat-box />
+    @endif
 
     <!-- Footer -->
     @unless(View::hasSection('hideFooter'))
@@ -60,7 +68,7 @@
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <!-- Custom JS -->
-    <script src="{{ asset('js/note.js') }}"></script>
+    <script src="{{ asset('js/chat-box.js') }}"></script>
 
     @yield('scripts')
 </body>

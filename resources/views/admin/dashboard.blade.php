@@ -2,8 +2,14 @@
 
 @section('title','Admin Panel')
 
+@section('hideChatBox', true)
+
+@section('styles')
+  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
-<div class="container py-5">
+<div class="container admin-dashboard">
   <h1 class="mb-4 text-white">Admin Dashboard</h1>
   <div class="row gx-4 gy-4">
     <div class="col-md-3">

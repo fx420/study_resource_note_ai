@@ -13,6 +13,8 @@ use App\Http\Controllers\PromptTemplateController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ContentModerationController;
 use App\Http\Controllers\LearnedDataController;
+use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\ChatController;
 
 Route::get('/', function () {
     return view('index');
@@ -35,6 +37,14 @@ Route::middleware(['auth'])->group(function () {
 
 /* ---------------------- SEARCH CONTROLLER ---------------------- */
 Route::get('/search', [SearchController::class, 'index'])->name('search');
+
+/* ---------------------- UPLOAD CONTROLLER ---------------------- */
+Route::get('/upload', [FileUploadController::class, 'showForm'])->name('upload.form');
+Route::post('/upload', [FileUploadController::class, 'upload'])->name('upload.submit');
+
+/* ---------------------- CHAT CONTROLLER ---------------------- */
+Route::post('/chat/submit', [ChatController::class,'submit'])
+     ->name('chat.submit'); 
 
 /* ---------------------- LIBRARY CONTROLLER ---------------------- */
 Route::middleware('auth')->get('/library', function () {
