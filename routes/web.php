@@ -47,13 +47,9 @@ Route::post('/chat/submit', [ChatController::class,'submit'])
      ->name('chat.submit'); 
 
 /* ---------------------- LIBRARY CONTROLLER ---------------------- */
-Route::middleware('auth')->get('/library', function () {
-    $notes = Note::where('user_id', Auth::id())
-                 ->orderBy('created_at', 'desc')
-                 ->get();
-
-    return view('library', compact('notes'));
-})->name('library');
+Route::get('/library', [LibraryController::class, 'index'])
+     ->middleware('auth')
+     ->name('library.index');
 
 /* ---------------------- ADMIN CONTROLLER ---------------------- */
 Route::middleware(['auth','can:admin'])->prefix('admin')->name('admin.')->group(function(){
