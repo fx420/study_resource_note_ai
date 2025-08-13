@@ -1,49 +1,63 @@
 @extends('layouts.index')
 
-@section('title', 'Login - Study Resource Note AI')
-
-{{-- Hide footer on auth pages --}}
+@section('title', 'Login – Study Resource Note AI')
 @section('hideFooter', true)
+@section('hideChatBox', true)
 
-{{-- Use auth.css for styles --}}
+@section('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endsection
 
 @section('scripts')
-    <script src="{{ asset('js/auth/auth.js') }}"></script>
+<script src="{{ asset('js/auth/auth.js') }}"></script>
 @endsection
 
 @section('content')
-<div class="container">
-    <div class="card login-card" style="width: 400px;">
-        <h3 class="mb-3 text-center">Sign In</h3>
-        <form method="POST" action="{{ route('login') }}" id="loginForm">
-            @csrf
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" name="username" id="username" class="form-control" required autofocus>
-                <small class="validation-error text-danger"></small>
-            </div>
+<div class="d-flex justify-content-center align-items-center" style="min-height:80vh;">
+  <div class="card login-card p-4" style="width: 400px; background-color:#212529;">
+    <h3 class="text-center text-white mb-4">Sign In</h3>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <div class="input-group">
-                    <input type="password" name="password" id="password" class="form-control" required>
-                    <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                <small class="validation-error text-danger"></small>
-            </div>
+    @if($errors->has('username'))
+      <div class="alert alert-danger">
+        {{ $errors->first('username') }}
+      </div>
+    @endif
 
-            <div class="text-center">
-                <button type="submit" class="btn btn-danger btn-login">Login</button>
-            </div>
-        </form>
-        <div class="mt-3 text-center">
-            <small>Don't have an account? 
-                <a href="{{ route('register') }}" class="register-link text-decoration-none">Register</a>
-            </small>
+    <form method="POST" action="{{ route('login') }}" id="loginForm" novalidate>
+      @csrf
+
+      <div class="mb-3">
+        <label for="username" class="form-label text-white">Username</label>
+        <input type="text" name="username" id="username" class="form-control bg-secondary text-white @error('username') is-invalid @enderror"
+          value="{{ old('username') }}" required autofocus>
+        @error('username')
+          <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label text-white">Password</label>
+        <div class="input-group">
+          <input type="password" name="password" id="password" class="form-control bg-secondary text-white @error('password') is-invalid @enderror"
+            required>
+          <button class="btn btn-outline-light" type="button" id="togglePassword">
+            <i class="fas fa-eye"></i>
+          </button>
+          @error('password')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+          @enderror
         </div>
-    </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-danger px-5">Login</button>
+      </div>
+    </form>
+
+    <p class="mt-3 text-center text-white">
+      Don’t have an account?
+      <a href="{{ route('register') }}" class="text-danger">Register</a>
+    </p>
+  </div>
 </div>
 @endsection

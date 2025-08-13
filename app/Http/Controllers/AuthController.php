@@ -16,12 +16,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => ['required', 'string'],
+            'username' => ['required','string'],
             'password' => ['required'],
         ]);
     
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+    
+            if (Auth::user()->is_admin) {
+                return redirect()->route('admin.dashboard');
+            }
+    
             return redirect()->intended('/');
         }
     
@@ -49,14 +54,12 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'username'              => ['required','string','max:255','unique:users'],
-            'name'                  => ['required','string','max:255'],
             'email'                 => ['required','email','max:255','unique:users'],
             'password'              => ['required','confirmed','min:6'],
         ]);
     
         $user = User::create([
             'username' => $validated['username'],
-            'name'     => $validated['name'],
             'email'    => $validated['email'],
             'password' => bcrypt($validated['password']),
         ]);

@@ -1,38 +1,51 @@
 @extends('layouts.index')
 
-@section('title', 'Home - Study Note AI')
+@section('title', 'Home - Study Resource Note AI')
+@section('showWelcome', true)
 
 @section('content')
-    <!-- Chat Messages Container -->
-    <div class="chat-box">
-        <div id="chatMessages" class="chat-messages">
-            <div id="welcomeMessage" class="text-white text-center mb-5">
-                <h1>Welcome to Study Note AI</h1>
-                <p>Generate study notes effortlessly using AI-powered summarization.</p>
-            </div>
+<div class="hero-section">
+    <div class="container text-center py-5">
+        <h1 class="display-4 fw-bold">Welcome to Study Resource Note AI</h1>
+        <p class="lead text">Generate personalized study notes and resources using the power of AI.</p>
+            <button href="#" id="openChatModal" class="btn btn-primary btn-lg mt-3">Get Started</button >
+    </div>
+</div>
 
+<div class="features-section bg-transparent py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-book fa-3x text-primary mb-3"></i>
+                <h5>Upload Study Materials</h5>
+                <p>Upload your notes, books or PDFs to generate summaries and key points instantly.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-brain fa-3x text-danger mb-3"></i>
+                <h5>Powered by AI</h5>
+                <p>Our system uses a Large Language Model to analyze and understand your content.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
+                <h5>Smart Suggestions</h5>
+                <p>Receive personalized resource recommendations based on your uploaded content.</p>
+            </div>
         </div>
     </div>
-    
-    <!-- Chat Input Area Fixed at the Bottom -->
-    <div class="input-area">
-        <form method="POST" action="/submit" id="chatForm" enctype="multipart/form-data">
-            @csrf
-            <div class="input-wrapper">
-                <!-- Text Input -->
-                <textarea name="prompt" id="promptInput" class="form-control prompt-input" placeholder="Type your message..." rows="1"></textarea>
+</div>
 
-                <!-- File Upload Button -->
-                <button type="button" class="btn btn-outline-light btn-upload" onclick="document.getElementById('fileInput').click();">
-                    <i class="fas fa-paperclip"></i>
-                </button>
-                <input type="file" name="file" id="fileInput" style="display: none;">
-
-                <!-- Send/Submit Button -->
-                <button type="submit" class="btn btn-primary btn-send">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </div>
-        </form>
+<!-- Chat Modal -->
+<div id="chatModal" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-3 p-4">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">Chat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            <x-chat-box :session="$session ?? null" />
+        </div>
     </div>
+  </div>
+</div>
 @endsection

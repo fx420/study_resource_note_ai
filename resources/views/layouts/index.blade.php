@@ -20,11 +20,15 @@
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+    <!-- SweetAlert2 Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/sweetalert2-custom.css') }}">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/chat-box.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/library.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
     @yield('styles')
@@ -32,9 +36,11 @@
     <title>@yield('title', 'Study Resource Note AI')</title>
 </head>
 <body>
-
+    
     <!-- Sidebar Component -->
-    <x-sidebar />
+    @auth
+      <x-sidebar />
+    @endauth
 
     <!-- Header -->
     <x-header />
@@ -49,6 +55,28 @@
         <x-footer />
     @endunless
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('newChatBtn');
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+            Swal.fire({
+            title: 'Start a new chat?',
+            text:  'This will clear your current conversation. Continue?',
+            icon:  'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, start new',
+            cancelButtonText: 'Cancel',
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = btn.dataset.route;
+            }
+            });
+        });
+        });
+    </script>
+
     <!-- jQuery-->
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
     <!-- Bootstrap JS -->
@@ -60,7 +88,8 @@
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <!-- Custom JS -->
-    <script src="{{ asset('js/note.js') }}"></script>
+    <!-- <script src="{{ asset('js/chat-box.js') }}"></script> -->
+     <script src="{{ asset('js/chat-modal.js') }}"></script>
 
     @yield('scripts')
 </body>

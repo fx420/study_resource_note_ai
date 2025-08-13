@@ -1,0 +1,22 @@
+[
+  {
+    "created_at": "2025-08-12 17:32:01",
+    "user": 3,
+    "course": "Software Engineering",
+    "topic": "Topic 1: Introduction of software testing",
+    "mode": "direct",
+    "metadata": {
+      "education_level": "Undergraduate",
+      "prior_knowledge": "Basic programming",
+      "learning_goals": "Understand the software testing",
+      "note_level": 2,
+      "example_count": 2,
+      "preferred_format": "Text"
+    },
+    "user_prompt": "Please generate study notes ...", 
+    "ai_response": "### Overview\nThe test life cycle is ...",
+    "files": [
+      ""
+    ]
+  }
+]

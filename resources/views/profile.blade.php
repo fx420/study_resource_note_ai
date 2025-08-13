@@ -1,5 +1,7 @@
 @extends('layouts.index')
 
+@section('hideChatBox', true)
+
 @section('title','My Profile')
 
 @section('styles')
