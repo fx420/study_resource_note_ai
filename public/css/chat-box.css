@@ -223,3 +223,24 @@
     background-color: #444;
     border-color: #666;
 }
+
+#chatModal .modal-content {
+  background-color: #000 !important;
+  color: #fff;
+}
+
+#chatModal .form-label {
+  text-align: left !important;
+  color: #fff;
+}
+
+#chatModal .form-control,
+#chatModal .form-select {
+  background-color: #000;
+  color: #fff;
+  border-color: #444;
+}
+
+#chatModal .form-select {
+  background-image: url("data:image/svg+xml,…");
+}

@@ -20,6 +20,8 @@
 
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
+    <!-- SweetAlert2 Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/sweetalert2-custom.css') }}">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/index.css') }}">
@@ -36,9 +38,9 @@
 <body>
     
     <!-- Sidebar Component -->
-    @if (auth()->check() && ! auth()->user()->is_admin)
-        <x-sidebar />
-    @endif
+    @auth
+      <x-sidebar />
+    @endauth
 
     <!-- Header -->
     <x-header />
@@ -48,14 +50,32 @@
         @yield('content')
     </main>
 
-    @if (!View::hasSection('hideChatBox'))
-        <x-chat-box />
-    @endif
-
     <!-- Footer -->
     @unless(View::hasSection('hideFooter'))
         <x-footer />
     @endunless
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const btn = document.getElementById('newChatBtn');
+        if (!btn) return;
+
+        btn.addEventListener('click', () => {
+            Swal.fire({
+            title: 'Start a new chat?',
+            text:  'This will clear your current conversation. Continue?',
+            icon:  'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, start new',
+            cancelButtonText: 'Cancel',
+            }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = btn.dataset.route;
+            }
+            });
+        });
+        });
+    </script>
 
     <!-- jQuery-->
     <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
@@ -68,7 +88,8 @@
     <!-- Vue JS -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <!-- Custom JS -->
-    <script src="{{ asset('js/chat-box.js') }}"></script>
+    <!-- <script src="{{ asset('js/chat-box.js') }}"></script> -->
+     <script src="{{ asset('js/chat-modal.js') }}"></script>
 
     @yield('scripts')
 </body>

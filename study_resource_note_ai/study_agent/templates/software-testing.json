@@ -1,0 +1,39 @@
+[
+    {
+        "type": "template_saved",
+        "created_at": "2025-08-13 09:02:26",
+        "template": {
+            "course": "Software Engineering",
+            "topic": "Topic 1: Introduction of software testing",
+            "mode": "direct",
+            "prompt": null,
+            "metadata": {
+                "education_level": "undergraduate",
+                "prior_knowledge": "Basic",
+                "learning_goals": "Understand Concept",
+                "note_level": "3",
+                "example_count": "2",
+                "preferred_format": "text"
+            }
+        }
+    },
+    {
+        "type": "conversation",
+        "created_at": "2025-08-13 09:02:53",
+        "user_id": 3,
+        "course": "Software Engineering",
+        "topic": "Topic 1: Introduction of software testing",
+        "mode": "direct",
+        "metadata": {
+            "education_level": "undergraduate",
+            "prior_knowledge": "Basic",
+            "learning_goals": "Understand Concept",
+            "note_level": "3",
+            "example_count": "2",
+            "preferred_format": "text"
+        },
+        "user_prompt": "Generate study notes for the topic 'Topic 1: Introduction of software testing' in Software Engineering. Use the following metadata: Education level: undergraduate; Prior knowledge: Basic; Learning goal: Understand Concept; Difficulty level: 3; Examples: 2; Format: text. Output structure: 1) Overview (paragraph), 2) Key Points (point form), 3) Examples (point form), 4) Summary (paragraph).",
+        "ai_response": "**1) Overview**  \nSoftware testing is a critical process in software engineering that evaluates a system or application to identify defects, ensure quality, and verify that it meets specified requirements. It involves executing software under controlled conditions to uncover errors, validate functionality, and improve reliability. Testing is integral to the Software Development Life Cycle (SDLC), helping teams deliver robust, user-friendly products while reducing risks of failures in production.\n\n**2) Key Points**  \n- **Purpose**: Detect defects, validate functionality, ensure compliance with requirements, and improve software quality.  \n- **Testing Levels**:  \n  - **Unit Testing**: Tests individual components (e.g., functions, classes).  \n  - **Integration Testing**: Checks interactions between integrated modules.  \n  - **System Testing**: Validates the entire system against requirements.  \n  - **Acceptance Testing**: Ensures the software meets user expectations.  \n- **Testing Types**:  \n  - **Functional Testing**: Verifies features (e.g., login functionality).  \n  - **Non-Functional Testing**: Evaluates performance, security, usability.  \n- **Manual vs. Automated Testing**:  \n  - Manual testing is human-driven and flexible.  \n  - Automated testing uses scripts for repetitive or complex scenarios.  \n- **Principles**:  \n  - Testing shows the presence of defects, not their absence.  \n  - Early testing reduces costs and effort.  \n  - Exhaustive testing is impossible (prioritize based on risk).  \n\n**3) Examples**  \n- **Example 1 (Functional Testing)**:  \n  Testing a login feature by entering valid\/invalid credentials to ensure correct authentication and error messages.  \n- **Example 2 (Non-Functional Testing)**:  \n  Load testing an e-commerce website during peak traffic to assess response times and server stability.  \n\n**4) Summary**  \nSoftware testing is a systematic process to ensure software quality by identifying defects and validating functionality. It operates at multiple levels (unit to acceptance) and includes functional and non-functional approaches. While manual testing offers flexibility, automation enhances efficiency for repetitive tasks. By adhering to principles like early testing and risk prioritization, teams mitigate errors and deliver reliable software aligned with user needs.",
+        "files": []
+    }
+]

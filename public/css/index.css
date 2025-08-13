@@ -27,3 +27,10 @@ body {
     align-items: center;
     text-align: center;
 }
+
+/* Log In */
+.not-logged {
+    padding: 100px 20px;
+    color: #fff;
+    text-align: center;
+}

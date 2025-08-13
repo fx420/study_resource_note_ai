@@ -1,78 +1,87 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form       = document.getElementById('chatForm');
-  const messages   = document.getElementById('chatMessages');
-  const promptIn   = form.querySelector('textarea[name="prompt"]');
-  const fileIn     = form.querySelector('input[name="file"]');
-  const welcome    = document.getElementById('welcomeMessage');
+  const openBtn = document.getElementById('openChatModal');
+  const modalEl = document.getElementById('chatModal');
+  if (openBtn && modalEl) {
+    const chatModal = new bootstrap.Modal(modalEl);
+    openBtn.addEventListener('click', e => {
+      e.preventDefault();
+      chatModal.show();
+    });
+  }
+
+  const chatForm = document.getElementById('chatForm');
+  const messagesEl = document.getElementById('chatMessages');
+  if (!chatForm) return;
+
+  const isChatPage = !!messagesEl;
+
+  chatForm.addEventListener('submit', async e => {
+    if (!isChatPage) {
+      const debugData = new FormData(chatForm);
+      console.group('Onboarding payload');
+      for (let [key, val] of debugData.entries()) {
+        console.log(key, val);
+      }
+      console.groupEnd();
+      return;  
+    }
+
+    e.preventDefault();
+
+    const formData = new FormData(chatForm);
+    const userText = formData.get('prompt').trim();
+    const fileObj = formData.get('file');
+    const hasFile = fileObj && fileObj.name;
+
+    if (!userText && !hasFile) {
+      return Swal.fire({
+        icon: 'warning',
+        text: 'Please type a message or attach a file.'
+      });
+    }
+
+    createBubble('user', userText || `[File: ${fileObj.name}]`);
+
+    try {
+      const res  = await fetch(chatForm.action, {
+        method: chatForm.method,
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+        body: formData
+      });
+      const json = await res.json();
+      createBubble('system', json.reply || 'No response.');
+      chatForm.reset();
+    } catch (err) {
+      console.error('Chat AJAX error', err);
+      Swal.fire('Error', 'Failed to send message.', 'error');
+    }
+  });
 
   function createBubble(type, text) {
+    if (!messagesEl) return;
     const b = document.createElement('div');
-    b.classList.add('chat-bubble', type);
-    // content
-    const c = document.createElement('div');
-    c.classList.add('bubble-content');
-    c.textContent = text;
-    b.appendChild(c);
-    // actions
-    const act = document.createElement('div');
-    act.classList.add('bubble-actions');
-    if (type === 'user') {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.classList.add('btn-action');
-      btn.title = 'Edit';
-      btn.innerHTML = '<i class="fas fa-edit"></i>';
-      // wire up editing here...
-      act.appendChild(btn);
-    } else {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.classList.add('btn-action');
-      btn.title = 'Download';
-      btn.innerHTML = '<i class="fas fa-download"></i>';
-      btn.addEventListener('click', () => {
+    b.className = `chat-bubble ${type}`;
+    b.innerHTML = `
+      <div class="bubble-content">${ text }</div>
+      <div class="bubble-actions">
+        <button type="button" class="btn-action" title="${
+          type==='user' ? 'Edit' : 'Download'
+        }">
+          <i class="fas fa-${
+            type==='user' ? 'edit' : 'download'
+          }"></i>
+        </button>
+      </div>`;
+    if (type !== 'user') {
+      b.querySelector('.btn-action').addEventListener('click', () => {
         const blob = new Blob([text], { type:'text/plain' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = `note-${Date.now()}.txt`;
         a.click();
       });
-      act.appendChild(btn);
     }
-    b.appendChild(act);
-    messages.appendChild(b);
-    messages.scrollTop = messages.scrollHeight;
+    messagesEl.appendChild(b);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
   }
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-
-    const text    = promptIn.value.trim();
-    const hasFile = fileIn.files.length > 0;
-    if (!text && !hasFile) {
-      return alert('Please type a message or attach a file.');
-    }
-
-    if (welcome) welcome.remove();
-
-    // show user bubble
-    createBubble('user', text || `[File: ${fileIn.files[0].name}]`);
-
-    // send
-    const fd = new FormData(form);
-    form.reset();
-
-    try {
-      const res  = await fetch(form.action, {
-        method:  'POST',
-        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content },
-        body:    fd
-      });
-      const data = await res.json();
-      createBubble('system', data.reply || 'No response.');
-    } catch (err) {
-      console.error(err);
-      createBubble('system', '⚠️ An error occurred.');
-    }
-  });
 });

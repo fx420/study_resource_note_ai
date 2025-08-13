@@ -16,7 +16,7 @@ use App\Http\Controllers\LearnedDataController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\ChatController;
 
-Route::get('/', function () {
+Route::middleware('auth')->get('/', function () {
     return view('index');
 })->name('index');
 
@@ -43,8 +43,23 @@ Route::get('/upload', [FileUploadController::class, 'showForm'])->name('upload.f
 Route::post('/upload', [FileUploadController::class, 'upload'])->name('upload.submit');
 
 /* ---------------------- CHAT CONTROLLER ---------------------- */
-Route::post('/chat/submit', [ChatController::class,'submit'])
-     ->name('chat.submit'); 
+Route::middleware('auth')->group(function () {
+    // create session
+    Route::post('/chat/session', [ChatController::class, 'createSession'])
+         ->name('chat.session.create')
+         ->middleware('auth');
+
+    // show session (existing)
+    Route::get('/chat/{session}', [ChatController::class, 'showSession'])
+         ->name('chat.session.show');
+
+    // follow-ups
+    Route::post('/chat/{session}/submit', [ChatController::class, 'submitSession'])
+         ->name('chat.session.submit');
+
+    Route::get('/chat/history', [ChatController::class, 'history'])
+         ->name('chat.history');
+});
 
 /* ---------------------- LIBRARY CONTROLLER ---------------------- */
 Route::get('/library', [LibraryController::class, 'index'])
@@ -54,7 +69,6 @@ Route::get('/library', [LibraryController::class, 'index'])
 /* ---------------------- ADMIN CONTROLLER ---------------------- */
 Route::middleware(['auth','can:admin'])->prefix('admin')->name('admin.')->group(function(){
     Route::get('/', [AdminController::class,'dashboard'])->name('dashboard');
-
     Route::resource('prompt-templates', PromptTemplateController::class);
     Route::resource('logs',            LogController::class)->only(['index','show','destroy']);
     Route::resource('moderation',     ContentModerationController::class)->only(['index','update']);
